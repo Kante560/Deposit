@@ -1,0 +1,317 @@
+/* ─── Google Fonts ─────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Roboto:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@import "tailwindcss";
+
+/* ─── CSS Design Tokens ────────────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --bg-obsidian:  #000000; /* Pure black OLED */
+  --bg-base:      #000000;
+  --bg-elevated:  #0c0d12; /* Very dark card/sidebar */
+  --bg-card:      rgba(255, 255, 255, 0.03);
+
+  /* Glassmorphism */
+  --glass-bg:     rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-blur:   16px;
+
+  /* Purple Accent palette (Replicating Runlyx color tokens) */
+  --accent-purple:       #6366f1; /* Primary Purple */
+  --accent-purple-glow:  rgba(99, 102, 241, 0.25);
+  --accent-violet:       #4a5cff; /* Secondary Electric Violet */
+  --accent-violet-glow:  rgba(74, 92, 255, 0.3);
+  --accent-cyan:         #00c6d4; /* Highlight Cyan */
+  
+  --accent-success:      #34D399; /* Green success */
+  --accent-success-glow: rgba(52, 211, 153, 0.25);
+  --accent-danger:       #F87171;
+
+  /* Text */
+  --fg:        #f4f4f5; /* Off-white */
+  --fg-muted:  #9aa0a6; /* Muted gray */
+  --fg-subtle: #4f5256;
+
+  /* Borders */
+  --border:       rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+
+  /* Typography */
+  --font-heading: 'Manrope', sans-serif;
+  --font-body:    'Manrope', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+  --font-serif:   'Times New Roman', Times, serif;
+
+  /* Easing */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:   cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Base Resets ──────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bg-obsidian);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── Typography ───────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+
+.font-mono, code, kbd, pre {
+  font-family: var(--font-mono) !important;
+  letter-spacing: 0.02em;
+}
+
+/* ─── Glassmorphism Utilities ──────────────────────────────── */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.glass-elevated {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* ─── Neon Glow Utilities ──────────────────────────────────── */
+.glow-purple {
+  box-shadow: 0 0 20px var(--accent-purple-glow), 0 0 40px rgba(99, 102, 241, 0.1);
+}
+
+.glow-violet {
+  box-shadow: 0 0 20px var(--accent-violet-glow), 0 0 40px rgba(74, 92, 255, 0.1);
+}
+
+.glow-success {
+  box-shadow: 0 0 20px var(--accent-success-glow), 0 0 40px rgba(52, 211, 153, 0.1);
+}
+
+.text-glow-purple {
+  text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+}
+
+.text-glow-success {
+  text-shadow: 0 0 20px rgba(52, 211, 153, 0.5);
+}
+
+/* ─── Gradient Text ────────────────────────────────────────── */
+.gradient-text-purple {
+  background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 50%, #4a5cff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-success {
+  background: linear-gradient(135deg, #34D399 0%, #10B981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-white {
+  background: linear-gradient(135deg, #FFFFFF 0%, rgba(255,255,255,0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Button System ────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #6366f1 0%, #4a5cff 100%);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s var(--ease-out-expo);
+  will-change: transform;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--accent-purple-glow);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-glass {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 22px;
+  background: var(--glass-bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: all 0.25s var(--ease-out-expo);
+  will-change: transform;
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+/* ─── Progress Bar ─────────────────────────────────────────── */
+.progress-track {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #00c6d4);
+  border-radius: 999px;
+  transition: width 0.6s var(--ease-out-expo);
+}
+
+/* ─── Trust Score Badge ────────────────────────────────────── */
+.trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #a5b4fc;
+}
+
+/* ─── Modal Overlay ────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* ─── Scrollbar Styling ────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-obsidian);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ─── Pulsing animation for Oracle loading state ───────────── */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; transform: scale(0.98); }
+  50%       { opacity: 1;   transform: scale(1.02); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ─── Marquee Animation ────────────────────────────────────── */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+/* ─── Noise texture overlay for depth ──────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.015;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Tailwind v4 Theme Extension ──────────────────────────── */
+@theme {
+  --color-obsidian: #000000;
+  --color-surface: rgba(255, 255, 255, 0.04);
+  --color-accent: #6366f1;
+  --color-accent-violet: #4a5cff;
+  --color-accent-cyan: #00c6d4;
+  --color-success: #34D399;
+  --color-danger: #F87171;
+  --font-heading: 'Manrope', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-serif: 'Times New Roman', Times, serif;
+  
+  --animate-float: float 3s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
+
+/* ─── Performance: will-change on animated elements ─────────── */
+.will-animate {
+  will-change: transform, opacity;
+}

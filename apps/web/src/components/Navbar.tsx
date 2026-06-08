@@ -1,0 +1,263 @@
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { ConnectKitButton } from "connectkit";
+import { useAccount } from "wagmi";
+import { useRouter, usePathname } from "next/navigation";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
+
+gsap.registerPlugin(useGSAP);
+
+export default function Navbar() {
+  const [londonTime, setLondonTime] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showLaunchPrompt, setShowLaunchPrompt] = useState(false);
+  const navbarRef = useRef<HTMLDivElement>(null);
+
+  const { isConnected } = useAccount();
+  const router = useRouter();
+  const pathname = usePathname();
+  const hasConnected = useRef(false);
+
+  // Wallet Connection Prompt
+  useEffect(() => {
+    if (isConnected && !hasConnected.current) {
+      hasConnected.current = true;
+      if (pathname !== "/create") {
+        setShowLaunchPrompt(true);
+      }
+    } else if (!isConnected) {
+      hasConnected.current = false;
+    }
+  }, [isConnected, pathname]);
+
+  // Live London Time Updater
+  useEffect(() => {
+    const updateLondonTime = () => {
+      const timeString = new Date().toLocaleTimeString("en-GB", {
+        timeZone: "Europe/London",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+      setLondonTime(timeString);
+    };
+    updateLondonTime();
+    const interval = setInterval(updateLondonTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // GSAP Entrance Animation on Mount
+  useGSAP(() => {
+    gsap.from(navbarRef.current, {
+      y: -30,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power3.out",
+    });
+  }, { scope: navbarRef });
+
+  return (
+    <div className="fixed top-0 left-0 right-0 z-50 px-4 pt-6 flex justify-center pointer-events-none">
+      {/* Pill-shaped Navbar */}
+      <div
+        ref={navbarRef}
+        className="w-full max-w-[1440px] px-3 py-2 flex items-center justify-between bg-white/5 backdrop-blur-md border border-white/10 rounded-full select-none pointer-events-auto shadow-lg"
+        style={{ padding: "5px" }}
+      >
+        {/* LEFT: Deposit Logo & Links */}
+        <div className="flex items-center gap-6 pl-2">
+          {/* Logo (Original Navbar Content) */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-105"
+              style={{ background: "linear-gradient(135deg, #6366f1 0%, #4a5cff 100%)" }}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 1L14 5V11L8 15L2 11V5L8 1Z" fill="#000000" strokeWidth="0" />
+                <path d="M8 5v6M5 6.5l3-1.5 3 1.5" stroke="#6366f1" strokeWidth="1.2" strokeLinecap="round" />
+              </svg>
+            </div>
+            <span
+              className="text-sm font-bold tracking-tight text-white font-heading group-hover:text-indigo-300 transition-colors"
+            >
+              Deposit
+            </span>
+          </Link>
+
+          {/* Desktop Nav Links */}
+          <nav className="hidden md:flex items-center gap-6">
+            {[
+              { href: "/", label: "Discover" },
+              { href: "/create", label: "Launch" },
+            ].map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className="text-xs font-sans font-medium text-gray-300 hover:text-white transition-colors duration-300"
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        {/* RIGHT: Status indicator, Live Clock, Wallet connection */}
+        <div className="hidden md:flex items-center gap-6 pr-2">
+          <span className="text-[11px] font-mono text-gray-400 hidden lg:inline uppercase tracking-wider">
+            Securing Escrow Milestones
+          </span>
+
+          {/* Live London Time */}
+          <div className="flex items-center gap-2 text-xs font-sans text-gray-400">
+            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>{londonTime ? `${londonTime} in London` : "--:-- in London"}</span>
+          </div>
+
+          {/* Connect Wallet with Hover Text Roll */}
+          <ConnectKitButton.Custom>
+            {({ isConnected, show, truncatedAddress, ensName }) => {
+              return (
+                <button
+                  onClick={show}
+                  className="group flex items-center gap-3 bg-white hover:bg-gray-100 text-gray-900 text-[13px] font-medium rounded-full pl-5 pr-2 py-2 cursor-pointer transition-all duration-300"
+                >
+                  <div className="h-[20px] overflow-hidden">
+                    <div className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-translate-y-[20px]">
+                      <span className="h-[20px] flex items-center">
+                        {isConnected ? ensName ?? truncatedAddress : "Connect Wallet"}
+                      </span>
+                      <span className="h-[20px] flex items-center">
+                        {isConnected ? ensName ?? truncatedAddress : "Connect Wallet"}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:rotate-45">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </div>
+                </button>
+              );
+            }}
+          </ConnectKitButton.Custom>
+        </div>
+
+        {/* MOBILE Menu Toggle */}
+        <div className="md:hidden pr-2">
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="px-4 py-2 bg-white text-gray-900 text-xs font-semibold rounded-full flex items-center justify-center cursor-pointer select-none"
+          >
+            {isMobileMenuOpen ? "Close" : "Menu"}
+          </button>
+        </div>
+      </div>
+
+      {/* MOBILE Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex flex-col justify-end pointer-events-auto">
+          <div
+            className="mx-3 mb-3 bg-[#0c0d12] border border-white/10 rounded-2xl p-6 flex flex-col gap-8 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+            style={{ transform: "translateY(0)" }}
+          >
+            <div className="flex justify-between items-center border-b border-white/5 pb-4">
+              <span className="text-xs font-mono text-gray-400">DEPOSIT CROWD ESCROW</span>
+              <span className="text-xs font-mono text-gray-400">
+                {londonTime ? `${londonTime} London` : ""}
+              </span>
+            </div>
+
+            <nav className="flex flex-col gap-4">
+              {[
+                { href: "/", label: "Discover Projects" },
+                { href: "/create", label: "Launch Campaign" },
+              ].map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-2xl font-sans font-medium text-white hover:text-indigo-400 transition-colors"
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+
+            <div className="pt-4 flex flex-col gap-3">
+              <ConnectKitButton.Custom>
+                {({ isConnected, show, truncatedAddress, ensName }) => (
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      show?.();
+                    }}
+                    className="w-full py-4 bg-[#6366f1] hover:bg-[#4a5cff] text-white text-sm font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                  >
+                    {isConnected ? ensName ?? truncatedAddress : "Connect Wallet"}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </button>
+                )}
+              </ConnectKitButton.Custom>
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-full py-3 bg-white/5 border border-white/10 text-white text-xs font-medium rounded-xl cursor-pointer"
+              >
+                Close Menu
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Launch Prompt Modal */}
+      {showLaunchPrompt && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm pointer-events-auto p-4">
+          <div className="bg-[#050508] border border-white/10 p-8 rounded-2xl shadow-2xl max-w-sm w-full relative overflow-hidden flex flex-col items-center text-center animate-in fade-in zoom-in-95 duration-300">
+            {/* Glow effect */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-indigo-500/30 rounded-full blur-[40px] pointer-events-none" />
+            
+            <div className="w-12 h-12 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-5 text-indigo-400">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 11.08V12a10 10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            
+            <h3 className="text-xl font-bold text-white font-heading mb-2">Wallet Connected</h3>
+            <p className="text-sm text-slate-400 mb-8 font-sans">
+              Would you like to launch a new escrow campaign, or stay here to explore?
+            </p>
+            
+            <div className="flex flex-col w-full gap-3">
+              <button
+                onClick={() => {
+                  setShowLaunchPrompt(false);
+                  router.push("/create");
+                }}
+                className="w-full py-3 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/25"
+              >
+                Launch Campaign
+              </button>
+              <button
+                onClick={() => setShowLaunchPrompt(false)}
+                className="w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-medium rounded-xl transition-colors"
+              >
+                Stay Here
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
