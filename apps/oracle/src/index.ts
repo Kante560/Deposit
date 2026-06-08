@@ -15,8 +15,7 @@ dotenv.config({ path: path.resolve(__dirname, "../.env.local") });
 const REQUIRED_ENV = ["AI_API_KEY", "ORACLE_PRIVATE_KEY", "RPC_URL", "DEPOSIT_ESCROW_ADDRESS"];
 for (const key of REQUIRED_ENV) {
   if (!process.env[key]) {
-    console.error(`❌ Missing required environment variable: ${key}`);
-    process.exit(1);
+    console.warn(`⚠️ WARNING: Missing environment variable: ${key}. The Oracle will fail to process requests until this is set in your Vercel Dashboard.`);
   }
 }
 
