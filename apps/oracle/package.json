@@ -13,7 +13,7 @@
     "dotenv": "^16.4.5",
     "ethers": "^6.11.1",
     "openai": "^4.29.0",
-    "@deposit/contracts": "workspace:*"
+    "@deposit/contracts": "*"
   },
   "devDependencies": {
     "typescript": "^5.0.0",
