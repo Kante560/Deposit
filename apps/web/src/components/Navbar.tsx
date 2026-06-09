@@ -14,6 +14,11 @@ export default function Navbar() {
   const [londonTime, setLondonTime] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showLaunchPrompt, setShowLaunchPrompt] = useState(false);
+  
+  const [isMobile, setIsMobile] = useState(false);
+  const [hasMetaMask, setHasMetaMask] = useState(false);
+  const [hasPhantom, setHasPhantom] = useState(false);
+  
   const navbarRef = useRef<HTMLDivElement>(null);
 
   const { isConnected } = useAccount();
@@ -30,19 +35,26 @@ export default function Navbar() {
     },
   });
 
-  // Live London Time Updater
+  // Time & Mobile Detection
   useEffect(() => {
-    const updateLondonTime = () => {
-      const timeString = new Date().toLocaleTimeString("en-GB", {
+    // Detect mobile and extensions
+    setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+    setHasMetaMask(typeof window !== 'undefined' && !!(window as any).ethereum?.isMetaMask);
+    setHasPhantom(typeof window !== 'undefined' && !!(window as any).phantom?.ethereum?.isPhantom);
+
+    const updateTime = () => {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString("en-GB", {
         timeZone: "Europe/London",
         hour: "2-digit",
         minute: "2-digit",
-        hour12: false,
+        second: "2-digit",
       });
       setLondonTime(timeString);
     };
-    updateLondonTime();
-    const interval = setInterval(updateLondonTime, 1000);
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -205,6 +217,40 @@ export default function Navbar() {
               <ConnectButton.Custom>
                 {({ account, chain, openAccountModal, openConnectModal, mounted }) => {
                   const connected = mounted && account && chain;
+                  
+                  // Mobile Deep-Link Injection
+                  if (mounted && isMobile && !connected && !hasMetaMask && !hasPhantom) {
+                    return (
+                      <div className="flex flex-col gap-3 w-full">
+                        <button
+                          onClick={() => {
+                            window.location.href = "https://metamask.app.link/dapp/deposit-web.vercel.app";
+                          }}
+                          className="w-full py-4 bg-[#f6851b] hover:bg-[#e2761b] text-white text-sm font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                        >
+                          Open in MetaMask
+                        </button>
+                        <button
+                          onClick={() => {
+                            window.location.href = "https://phantom.app/ul/browse/deposit-web.vercel.app";
+                          }}
+                          className="w-full py-4 bg-[#ab9ff2] hover:bg-[#8a7be0] text-white text-sm font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                        >
+                          Open in Phantom
+                        </button>
+                        <button
+                          onClick={() => {
+                            setIsMobileMenuOpen(false);
+                            if (openConnectModal) openConnectModal();
+                          }}
+                          className="w-full py-3 mt-2 bg-white/5 border border-white/10 text-white text-xs font-medium rounded-xl cursor-pointer"
+                        >
+                          More Wallets (WalletConnect)
+                        </button>
+                      </div>
+                    );
+                  }
+
                   return (
                     <button
                       onClick={() => {
