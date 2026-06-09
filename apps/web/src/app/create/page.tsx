@@ -415,7 +415,7 @@ The AI Oracle will verify milestone delivery by scanning public GitHub repositor
                 </div>
                 <h4 className="text-sm font-bold text-slate-400 mb-1">No Pitch Generated</h4>
                 <p className="text-xs text-slate-600 max-w-xs leading-relaxed">
-                  Enter your Campaign Title, write down your concepts, and hit "Generate AI Pitch" to see your technical audit profile draft.
+                  Enter your Campaign Title, write down your concepts, and hit &quot;Generate AI Pitch&quot; to see your technical audit profile draft.
                 </p>
               </div>
             )}

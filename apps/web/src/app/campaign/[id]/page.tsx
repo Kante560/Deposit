@@ -134,10 +134,11 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
     const fundedEth = parseFloat(formatEther(totalFunded));
     const percent = goalEth > 0 ? Math.round((fundedEth / goalEth) * 100) : 0;
     
+    // eslint-disable-next-line react-hooks/purity
     const now = Math.floor(Date.now() / 1000);
     const deadlineSec = Number(deadline);
     let deadlineText = "Expired";
-    let isExpired = now >= deadlineSec;
+    const isExpired = now >= deadlineSec;
     if (deadlineSec > now) {
       const hoursLeft = Math.ceil((deadlineSec - now) / 3600);
       if (hoursLeft > 24) {
@@ -305,7 +306,6 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
               {campaign.milestones.map((m, idx) => {
                 const isApproved = idx < campaign.currentMilestone;
                 const isCurrent = idx === campaign.currentMilestone && !campaign.isCompleted && !campaign.isFailed;
-                const isLocked = idx > campaign.currentMilestone || campaign.isFailed || campaign.isCompleted;
 
                 return (
                   <div key={idx} className="relative">

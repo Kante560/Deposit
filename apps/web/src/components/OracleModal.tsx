@@ -178,7 +178,7 @@ export default function OracleModal({
                 Milestone Promise
               </label>
               <div className="bg-white/5 border border-white/8 rounded-lg p-3 text-sm text-slate-300 font-sans italic">
-                "{originalPromise}"
+                &quot;{originalPromise}&quot;
               </div>
             </div>
 
@@ -280,7 +280,7 @@ export default function OracleModal({
                 AI Auditor Justification
               </span>
               <p className="text-sm text-red-300 bg-red-500/5 border border-red-500/10 rounded-lg p-3 leading-relaxed font-sans italic">
-                "{feedbackMsg}"
+                &quot;{feedbackMsg}&quot;
               </p>
             </div>
 

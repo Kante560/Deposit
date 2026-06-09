@@ -117,7 +117,7 @@ export default function CyberHUD() {
         `
       });
       const mesh = new THREE.Mesh(geometry, material);
-      (mesh as any).userData = { speed };
+      mesh.userData.speed = speed;
       return mesh;
     };
 
@@ -130,13 +130,13 @@ export default function CyberHUD() {
     const arcGeo = new THREE.RingGeometry(15, 15.3, 64, 1, 0, Math.PI * 0.6);
     const arcMat = new THREE.MeshBasicMaterial({ color: '#ffffff', side: THREE.DoubleSide, transparent: true, opacity: 0.8 });
     const arcMesh = new THREE.Mesh(arcGeo, arcMat);
-    (arcMesh as any).userData = { speed: 0.2 };
+    arcMesh.userData.speed = 0.2;
     ringsGroup.add(arcMesh);
 
     const arcGeo2 = new THREE.RingGeometry(16, 16.2, 64, 1, Math.PI, Math.PI * 0.4);
     const arcMat2 = new THREE.MeshBasicMaterial({ color: '#00a2ff', side: THREE.DoubleSide, transparent: true, opacity: 0.6 });
     const arcMesh2 = new THREE.Mesh(arcGeo2, arcMat2);
-    (arcMesh2 as any).userData = { speed: -0.15 };
+    arcMesh2.userData.speed = -0.15;
     ringsGroup.add(arcMesh2);
 
     // 4. Circuit Traces
@@ -305,6 +305,7 @@ export default function CyberHUD() {
     return () => {
         cancelAnimationFrame(animationFrameId);
         resizeObserver.disconnect();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         if (mountRef.current && renderer.domElement) {
             mountRef.current.removeChild(renderer.domElement);
         }

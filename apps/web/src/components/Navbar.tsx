@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { ConnectKitButton } from "connectkit";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useRouter, usePathname } from "next/navigation";
 import { useGSAP } from "@gsap/react";
@@ -26,6 +26,7 @@ export default function Navbar() {
     if (isConnected && !hasConnected.current) {
       hasConnected.current = true;
       if (pathname !== "/create") {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setShowLaunchPrompt(true);
       }
     } else if (!isConnected) {
@@ -120,33 +121,45 @@ export default function Navbar() {
           </div>
 
           {/* Connect Wallet with Hover Text Roll */}
-          <ConnectKitButton.Custom>
-            {({ isConnected, show, truncatedAddress, ensName }) => {
+          <ConnectButton.Custom>
+            {({ account, chain, openAccountModal, openConnectModal, mounted }) => {
+              const connected = mounted && account && chain;
               return (
-                <button
-                  onClick={show}
-                  className="group flex items-center gap-3 bg-white hover:bg-gray-100 text-gray-900 text-[13px] font-medium rounded-full pl-5 pr-2 py-2 cursor-pointer transition-all duration-300"
+                <div
+                  {...(!mounted && {
+                    'aria-hidden': true,
+                    style: {
+                      opacity: 0,
+                      pointerEvents: 'none',
+                      userSelect: 'none',
+                    },
+                  })}
                 >
-                  <div className="h-[20px] overflow-hidden">
-                    <div className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-translate-y-[20px]">
-                      <span className="h-[20px] flex items-center">
-                        {isConnected ? ensName ?? truncatedAddress : "Connect Wallet"}
-                      </span>
-                      <span className="h-[20px] flex items-center">
-                        {isConnected ? ensName ?? truncatedAddress : "Connect Wallet"}
-                      </span>
+                  <button
+                    onClick={connected ? openAccountModal : openConnectModal}
+                    className="group flex items-center gap-3 bg-white hover:bg-gray-100 text-gray-900 text-[13px] font-medium rounded-full pl-5 pr-2 py-2 cursor-pointer transition-all duration-300"
+                  >
+                    <div className="h-[20px] overflow-hidden">
+                      <div className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-translate-y-[20px]">
+                        <span className="h-[20px] flex items-center">
+                          {connected ? account.displayName : "Connect Wallet"}
+                        </span>
+                        <span className="h-[20px] flex items-center">
+                          {connected ? account.displayName : "Connect Wallet"}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:rotate-45">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                  </div>
-                </button>
+                    <div className="w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:rotate-45">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </div>
+                  </button>
+                </div>
               );
             }}
-          </ConnectKitButton.Custom>
+          </ConnectButton.Custom>
         </div>
 
         {/* MOBILE Menu Toggle */}
@@ -191,23 +204,27 @@ export default function Navbar() {
             </nav>
 
             <div className="pt-4 flex flex-col gap-3">
-              <ConnectKitButton.Custom>
-                {({ isConnected, show, truncatedAddress, ensName }) => (
-                  <button
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                      show?.();
-                    }}
-                    className="w-full py-4 bg-[#6366f1] hover:bg-[#4a5cff] text-white text-sm font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer"
-                  >
-                    {isConnected ? ensName ?? truncatedAddress : "Connect Wallet"}
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                  </button>
-                )}
-              </ConnectKitButton.Custom>
+              <ConnectButton.Custom>
+                {({ account, chain, openAccountModal, openConnectModal, mounted }) => {
+                  const connected = mounted && account && chain;
+                  return (
+                    <button
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        if (connected && openAccountModal) openAccountModal();
+                        else if (!connected && openConnectModal) openConnectModal();
+                      }}
+                      className="w-full py-4 bg-[#6366f1] hover:bg-[#4a5cff] text-white text-sm font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    >
+                      {connected ? account.displayName : "Connect Wallet"}
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </button>
+                  );
+                }}
+              </ConnectButton.Custom>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="w-full py-3 bg-white/5 border border-white/10 text-white text-xs font-medium rounded-xl cursor-pointer"
