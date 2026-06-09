@@ -67,7 +67,7 @@ export default function ExplorePage() {
           currentMilestone,
           isFailed,
           isCompleted,
-        ] = result.result as [string, bigint, bigint, bigint, bigint, boolean, boolean];
+        ] = result.result as unknown as [string, bigint, bigint, bigint, bigint, boolean, boolean];
 
         const goalEth = parseFloat(formatEther(goal));
         const fundedEth = parseFloat(formatEther(totalFunded));
