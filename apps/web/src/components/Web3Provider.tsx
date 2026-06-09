@@ -19,7 +19,7 @@ const config = createConfig(
     walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? "deposit-local-dev",
     appName: "Deposit",
     appDescription: "AI-verified crowdfunding on Base — funds released only when your Oracle confirms milestone delivery.",
-    appUrl: "https://deposit.xyz",
+    appUrl: process.env.NEXT_PUBLIC_APP_URL ?? "https://deposit-web.vercel.app",
     appIcon: "/favicon.ico",
   })
 );
