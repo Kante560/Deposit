@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount } from "wagmi";
+import { useAccount, useAccountEffect } from "wagmi";
 import { useRouter, usePathname } from "next/navigation";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
@@ -21,18 +21,14 @@ export default function Navbar() {
   const pathname = usePathname();
   const hasConnected = useRef(false);
 
-  // Wallet Connection Prompt
-  useEffect(() => {
-    if (isConnected && !hasConnected.current) {
-      hasConnected.current = true;
+  // Wallet Connection Prompt (Only triggers on active new connection)
+  useAccountEffect({
+    onConnect() {
       if (pathname !== "/create") {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setShowLaunchPrompt(true);
       }
-    } else if (!isConnected) {
-      hasConnected.current = false;
-    }
-  }, [isConnected, pathname]);
+    },
+  });
 
   // Live London Time Updater
   useEffect(() => {
@@ -92,6 +88,7 @@ export default function Navbar() {
           <nav className="hidden md:flex items-center gap-6">
             {[
               { href: "/", label: "Discover" },
+              { href: "/explore", label: "Explore" },
               { href: "/create", label: "Launch" },
             ].map(({ href, label }) => (
               <Link
@@ -190,6 +187,7 @@ export default function Navbar() {
             <nav className="flex flex-col gap-4">
               {[
                 { href: "/", label: "Discover Projects" },
+                { href: "/explore", label: "Explore Campaigns" },
                 { href: "/create", label: "Launch Campaign" },
               ].map(({ href, label }) => (
                 <Link
