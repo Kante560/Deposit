@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo, useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useReadContract, useReadContracts, useChainId } from "wagmi";
 import { formatEther } from "viem";
@@ -9,7 +10,7 @@ import HeroSection from "@/components/HeroSection";
 import CampaignCard from "@/components/CampaignCard";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
-import { motion, AnimatePresence } from "framer-motion";
+import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
 import DotField from "@/components/ui/DotField";
 
 gsap.registerPlugin(useGSAP);
@@ -284,11 +285,11 @@ export default function Page() {
   };
 
   return (
-    <>
+    <LazyMotion features={domAnimation}>
       {/* ─── Global Initial Loader Overlay ─── */}
       <AnimatePresence>
         {!isAppReady && (
-          <motion.div
+          <m.div
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 1.05 }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
@@ -296,7 +297,7 @@ export default function Page() {
           >
             {/* Minimal glowing spinner/logo area */}
             <div className="relative flex items-center justify-center mb-8">
-              <motion.div 
+              <m.div 
                 animate={{ rotate: 360 }}
                 transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
                 className="absolute inset-0 rounded-full border border-t-[#00c6d4] border-r-indigo-500 border-b-transparent border-l-transparent opacity-80"
@@ -306,15 +307,15 @@ export default function Page() {
                 <span className="text-black font-black text-xl tracking-tighter">D</span>
               </div>
             </div>
-            <motion.div 
+            <m.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               className="text-xs font-mono tracking-widest text-slate-400 uppercase"
             >
               Initializing Protocol...
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         )}
       </AnimatePresence>
 
@@ -324,7 +325,7 @@ export default function Page() {
 
         {/* 2. Trust Logos Bar */}
       <section className="py-12 border-y border-white/5 bg-[#000000] overflow-hidden">
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -363,12 +364,12 @@ export default function Page() {
               ))}
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* 3. Product Capabilities (Header & Grid) */}
       <section id="capabilities" className="py-28 border-b border-white/5 bg-[#000000]">
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -467,12 +468,12 @@ export default function Page() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* 4. Enterprise Controls & Access Snapshot */}
       <section className="py-28 border-b border-white/5 bg-[#000000] relative">
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -535,7 +536,7 @@ export default function Page() {
                       <span className="text-white font-bold">{stat.value}</span>
                     </div>
                     <div className="h-2 rounded bg-white/5 overflow-hidden">
-                      <motion.div 
+                      <m.div 
                         className="h-full bg-gradient-to-r from-indigo-500 to-cyan-400 rounded" 
                         initial={{ width: 0 }}
                         whileInView={{ width: stat.value }}
@@ -548,12 +549,12 @@ export default function Page() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* 5. Automation Playbooks (Tabbed Section) */}
       <section className="py-28 border-b border-white/5 bg-[#000000]" ref={playbooksRef}>
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -624,7 +625,14 @@ export default function Page() {
 
             <div className="lg:col-span-7 space-y-6">
               <div className="rounded-xl overflow-hidden shadow-2xl border border-white/10 relative">
-                <img key={activeTab} src={TAB_DATA[activeTab].image} alt={TAB_DATA[activeTab].title} className="w-full h-auto object-cover opacity-80 hover:opacity-100 transition-opacity duration-500" />
+                <Image 
+                  key={activeTab} 
+                  src={TAB_DATA[activeTab].image} 
+                  alt={TAB_DATA[activeTab].title} 
+                  width={800}
+                  height={500}
+                  className="w-full h-auto object-cover opacity-80 hover:opacity-100 transition-opacity duration-500" 
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
               </div>
               <div className="rounded-lg bg-[#050508] border border-white/10 p-6 shadow-2xl font-mono text-xs text-slate-300 relative overflow-hidden">
@@ -639,12 +647,12 @@ export default function Page() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* 6. Campaign Grid Section (Explore verified campaigns) */}
       <section id="explore" className="py-28 border-b border-white/5 bg-[#000000]">
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -693,12 +701,12 @@ export default function Page() {
               ))}
             </div>
           )}
-        </motion.div>
+        </m.div>
       </section>
 
       {/* 7. Escrow Fees & Scale Tiers Grid (Pricing) */}
       <section className="py-28 border-b border-white/5 bg-[#000000]">
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -835,12 +843,12 @@ export default function Page() {
               </a>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* 8. FAQs Section */}
       <section id="faq" className="py-28 border-b border-white/5 bg-[#000000]">
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -897,14 +905,14 @@ export default function Page() {
               );
             })}
           </div>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* 9. Neon Keyboard Widget & CTA */}
       <section className="py-28 bg-[#000000] relative overflow-hidden flex flex-col items-center">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none" />
         
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -959,7 +967,7 @@ export default function Page() {
               Explore Active Campaigns
             </a>
           </div>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* 10. Footer */}
@@ -1077,6 +1085,6 @@ export default function Page() {
         </div>
       </footer>
     </div>
-    </>
+    </LazyMotion>
   );
 }

@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useRef } from "react";
-import AnoAI from "./ui/animated-shader-background";
-import CyberHUD from "./CyberHUD";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+
+const AnoAI = dynamic(() => import("./ui/animated-shader-background"), { ssr: false });
+const CyberHUD = dynamic(() => import("./CyberHUD"), { ssr: false });
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 
@@ -171,11 +174,26 @@ export default function HeroSection() {
               <div className="relative w-full h-full flex items-center justify-center">
                 {/* 3D Animation: Hidden on mobile, visible on lg screens */}
                 <div className="w-full h-full hidden lg:flex items-center justify-center">
-                  <CyberHUD />
+                  <Image 
+                    src="/ZogTu.jpg" 
+                    alt="Deposit Hero" 
+                    width={800}
+                    height={600}
+                    className="w-full h-auto max-h-full object-contain rounded-xl shadow-2xl " 
+                    priority
+                  />
+                  {/* <CyberHUD /> */}
                 </div>
                 {/* Static Image: Visible on mobile, hidden on lg screens */}
                 <div className="w-full h-full flex lg:hidden items-center justify-center p-2">
-                  <img src="/oracle2.png" alt="Deposit Hero" className="w-full h-auto max-h-full object-contain rounded-xl shadow-2xl border border-white/10" />
+                  <Image 
+                    src="/oracle2.png" 
+                    alt="Deposit Hero" 
+                    width={800}
+                    height={600}
+                    className="w-full h-auto max-h-full object-contain rounded-xl shadow-2xl border border-white/10" 
+                    priority
+                  />
                 </div>
               </div>
             </div>
