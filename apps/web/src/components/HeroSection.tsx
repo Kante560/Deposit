@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 
 const AnoAI = dynamic(() => import("./ui/animated-shader-background"), { ssr: false });
 const CyberHUD = dynamic(() => import("./CyberHUD"), { ssr: false });
+import DotField from "./ui/DotField";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 
@@ -47,24 +48,27 @@ export default function HeroSection() {
     >
       {/* 1. Background Shader Overlay */}
       <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden bg-[#000000]">
-        <AnoAI />
+        {/* <AnoAI /> */}
         {/* Subtle glass texture overlay for tech depth */}
         <div 
-          className="absolute inset-0 w-full h-full z-20"
+          className="absolute inset-0 z-0 opacity-40"
           style={{
-            backgroundImage: `
-              repeating-linear-gradient(
-                31deg, 
-                rgba(255, 255, 255, 0.01) 0px, 
-                rgba(255, 255, 255, 0.01) 1px, 
-                transparent 1px, 
-                transparent 16px
-              )
-            `,
-            maskImage: "linear-gradient(to bottom, black, rgba(0, 0, 0, 0.6))",
-            WebkitMaskImage: "linear-gradient(to bottom, black, rgba(0, 0, 0, 0.6))"
+            maskImage: 'linear-gradient(to bottom, black 30%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 30%, transparent 100%)'
           }}
-        />
+        >
+          <DotField
+            dotRadius={1.5}
+            dotSpacing={14}
+            bulgeStrength={67}
+            glowRadius={160}
+            sparkle={true}
+            waveAmplitude={0}
+            gradientFrom="#6366f1"
+            gradientTo="#4a5cff"
+            glowColor="rgba(99, 102, 241, 0.4)"
+          />
+        </div>
       </div>
 
       {/* 2. Hero Content (z-20) */}
@@ -175,7 +179,7 @@ export default function HeroSection() {
                 {/* 3D Animation: Hidden on mobile, visible on lg screens */}
                 <div className="w-full h-full hidden lg:flex items-center justify-center">
                   <Image 
-                    src="/ZogTu.jpg" 
+                    src="/ZogTu1.png" 
                     alt="Deposit Hero" 
                     width={800}
                     height={600}

@@ -369,14 +369,14 @@ export default function Page() {
 
       {/* 3. Product Capabilities (Header & Grid) */}
       <section id="capabilities" className="py-28 border-b border-white/5 bg-[#000000]">
-        <m.div 
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          className="max-w-7xl mx-auto px-6"
-        >
-          <div className="text-center max-w-2xl mx-auto mb-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <m.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="text-center max-w-2xl mx-auto mb-20"
+          >
             <span className="px-3 py-1 rounded-full glass border border-indigo-500/20 bg-indigo-500/5 text-xs font-mono tracking-wider text-[#a5b4fc] inline-block mb-4">
               Protocol Capabilities
             </span>
@@ -386,11 +386,17 @@ export default function Page() {
             <p className="text-slate-400 text-base md:text-lg font-sans">
               Modern crowdfunding workflows that protect contributors and incentivize builders.
             </p>
-          </div>
+          </m.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Card 1 (L: 7 cols) */}
-            <div className="lg:col-span-7 rounded-xl glass border border-white/10 p-8 flex flex-col justify-between bg-white/2 hover:border-indigo-500/20 transition-all duration-300 shadow-xl relative group">
+            <m.div 
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="lg:col-span-7 rounded-xl glass border border-white/10 p-8 flex flex-col justify-between bg-white/2 hover:border-indigo-500/20 transition-all duration-300 shadow-xl relative group"
+            >
               <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-indigo-500/5 rounded-full blur-[80px] pointer-events-none" />
               <div>
                 <h3 className="text-2xl font-bold mb-3 text-white">Automated Milestone Escrows</h3>
@@ -425,10 +431,16 @@ export default function Page() {
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;c.creator.transfer(payout);</p>
                 <p>&#125;</p>
               </div>
-            </div>
+            </m.div>
 
             {/* Card 2 (R: 5 cols) */}
-            <div className="lg:col-span-5 rounded-xl glass border border-white/10 p-8 flex flex-col justify-between bg-white/2 hover:border-indigo-500/20 transition-all duration-300 shadow-xl relative group">
+            <m.div 
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+              className="lg:col-span-5 rounded-xl glass border border-white/10 p-8 flex flex-col justify-between bg-white/2 hover:border-indigo-500/20 transition-all duration-300 shadow-xl relative group"
+            >
               <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-cyan-500/5 rounded-full blur-[80px] pointer-events-none" />
               <div>
                 <h3 className="text-2xl font-bold mb-3 text-white">AI Oracle Validation Feed</h3>
@@ -466,23 +478,22 @@ export default function Page() {
                   <span className="text-emerald-300 font-semibold">Tranche approved: Tx 0x4f82...7b1a</span>
                 </div>
               </div>
-            </div>
+            </m.div>
           </div>
-        </m.div>
+        </div>
       </section>
 
       {/* 4. Enterprise Controls & Access Snapshot */}
       <section className="py-28 border-b border-white/5 bg-[#000000] relative">
-        <m.div 
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          className="max-w-7xl mx-auto px-6"
-        >
+        <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Left Info List */}
-            <div>
+            <m.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+            >
               <span className="text-xs font-bold font-mono text-indigo-400 uppercase tracking-widest block mb-3">
                 Decentralized Safeguards
               </span>
@@ -508,10 +519,16 @@ export default function Page() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </m.div>
 
             {/* Right Card: Access Snapshot */}
-            <div className="rounded-xl glass border border-white/10 p-8 bg-white/2 hover:border-indigo-500/20 transition-all duration-300 relative shadow-2xl">
+            <m.div 
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+              className="rounded-xl glass border border-white/10 p-8 bg-white/2 hover:border-indigo-500/20 transition-all duration-300 relative shadow-2xl"
+            >
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] bg-indigo-500/5 rounded-full blur-[80px] pointer-events-none" />
               <div className="flex justify-between items-center mb-6">
                 <div>
@@ -547,21 +564,21 @@ export default function Page() {
                   </div>
                 ))}
               </div>
-            </div>
+            </m.div>
           </div>
-        </m.div>
+        </div>
       </section>
 
       {/* 5. Automation Playbooks (Tabbed Section) */}
       <section className="py-28 border-b border-white/5 bg-[#000000]" ref={playbooksRef}>
-        <m.div 
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          className="max-w-7xl mx-auto px-6"
-        >
-          <div className="text-center max-w-2xl mx-auto mb-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <m.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="text-center max-w-2xl mx-auto mb-16"
+          >
             <span className="text-xs font-bold font-mono text-indigo-400 uppercase tracking-widest block mb-3">
               Feature Deep Dive
             </span>
@@ -571,7 +588,7 @@ export default function Page() {
             <p className="text-slate-400 text-sm md:text-base font-sans">
               Secure crowdfunding campaigns with predictable milestone automation. Here is how it works under the hood:
             </p>
-          </div>
+          </m.div>
 
           {/* Tabs header row */}
           <div className="flex flex-wrap items-center justify-center gap-2 mb-12 max-w-4xl mx-auto p-1.5 rounded-xl bg-white/2 border border-white/5 glass">
@@ -647,20 +664,19 @@ export default function Page() {
               </div>
             </div>
           </div>
-        </m.div>
+        </div>
       </section>
 
       {/* 6. Campaign Grid Section (Explore verified campaigns) */}
       <section id="explore" className="py-28 border-b border-white/5 bg-[#000000]">
-        <m.div 
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          className="max-w-7xl mx-auto px-6"
-        >
+        <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
-            <div>
+            <m.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+            >
               <span className="text-xs font-bold font-mono text-indigo-400 uppercase tracking-widest block mb-2">
                 Active Escrow Channels
               </span>
@@ -670,14 +686,20 @@ export default function Page() {
               <p className="text-slate-400 text-sm md:text-base mt-2 max-w-xl font-sans">
                 Review verified proposals. Smart contracts enforce that funds are released on milestone completion.
               </p>
-            </div>
+            </m.div>
             
-            <div className="mt-6 md:mt-0 flex gap-4 text-xs font-mono font-medium text-slate-400">
+            <m.div 
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+              className="mt-6 md:mt-0 flex gap-4 text-xs font-mono font-medium text-slate-400"
+            >
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span>On-Chain Sync</span>
               </div>
-            </div>
+            </m.div>
           </div>
 
           {/* Campaign Grid */}
@@ -701,19 +723,19 @@ export default function Page() {
               ))}
             </div>
           )}
-        </m.div>
+        </div>
       </section>
 
       {/* 7. Escrow Fees & Scale Tiers Grid (Pricing) */}
       <section className="py-28 border-b border-white/5 bg-[#000000]">
-        <m.div 
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          className="max-w-7xl mx-auto px-6"
-        >
-          <div className="text-center max-w-2xl mx-auto mb-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <m.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="text-center max-w-2xl mx-auto mb-20"
+          >
             <span className="text-xs font-bold font-mono text-indigo-400 uppercase tracking-widest block mb-3">
               Pricing Models
             </span>
@@ -723,11 +745,17 @@ export default function Page() {
             <p className="text-slate-400 text-sm md:text-base font-sans">
               No subscription charges. Only flat smart contract success fees upon approved milestone payouts.
             </p>
-          </div>
+          </m.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Hobby Tier */}
-            <div className="rounded-xl glass border border-white/10 p-8 flex flex-col justify-between bg-white/2 hover:border-indigo-500/20 transition-all duration-300 relative group">
+            <m.div 
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="rounded-xl glass border border-white/10 p-8 flex flex-col justify-between bg-white/2 hover:border-indigo-500/20 transition-all duration-300 relative group"
+            >
               <div>
                 <span className="text-xs font-mono font-semibold text-slate-400 block mb-1">Hobby / Individual</span>
                 <div className="flex items-baseline gap-1 mb-4">
@@ -762,10 +790,16 @@ export default function Page() {
               >
                 Launch Free
               </button>
-            </div>
+            </m.div>
 
             {/* Launchpad Tier */}
-            <div className="rounded-xl glass border border-indigo-500/30 p-8 flex flex-col justify-between bg-white/2 hover:border-indigo-500/50 transition-all duration-300 relative group shadow-2xl">
+            <m.div 
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+              className="rounded-xl glass border border-indigo-500/30 p-8 flex flex-col justify-between bg-white/2 hover:border-indigo-500/50 transition-all duration-300 relative group shadow-2xl"
+            >
               <div className="absolute top-0 right-4 -translate-y-1/2 px-2.5 py-0.5 rounded-full bg-indigo-500 text-white font-mono text-[9px] font-bold tracking-wider uppercase">
                 Recommended
               </div>
@@ -803,10 +837,16 @@ export default function Page() {
               >
                 Create Campaign
               </button>
-            </div>
+            </m.div>
 
             {/* Enterprise Tier */}
-            <div className="rounded-xl glass border border-white/10 p-8 flex flex-col justify-between bg-white/2 hover:border-indigo-500/20 transition-all duration-300 relative group">
+            <m.div 
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 }}
+              className="rounded-xl glass border border-white/10 p-8 flex flex-col justify-between bg-white/2 hover:border-indigo-500/20 transition-all duration-300 relative group"
+            >
               <div>
                 <span className="text-xs font-mono font-semibold text-slate-400 block mb-1">Enterprise / DAO</span>
                 <div className="flex items-baseline gap-1 mb-4">
@@ -841,9 +881,9 @@ export default function Page() {
               >
                 Contact Protocol Swarm
               </a>
-            </div>
+            </m.div>
           </div>
-        </m.div>
+        </div>
       </section>
 
       {/* 8. FAQs Section */}

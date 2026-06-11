@@ -11,7 +11,6 @@ import { gsap } from "gsap";
 gsap.registerPlugin(useGSAP);
 
 export default function Navbar() {
-  const [londonTime, setLondonTime] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showLaunchPrompt, setShowLaunchPrompt] = useState(false);
   
@@ -41,21 +40,6 @@ export default function Navbar() {
     setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
     setHasMetaMask(typeof window !== 'undefined' && !!(window as any).ethereum?.isMetaMask);
     setHasPhantom(typeof window !== 'undefined' && !!(window as any).phantom?.ethereum?.isPhantom);
-
-    const updateTime = () => {
-      const now = new Date();
-      const timeString = now.toLocaleTimeString("en-GB", {
-        timeZone: "Europe/London",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      });
-      setLondonTime(timeString);
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
   }, []);
 
   // GSAP Entrance Animation on Mount
@@ -99,7 +83,6 @@ export default function Navbar() {
           {/* Desktop Nav Links */}
           <nav className="hidden md:flex items-center gap-6">
             {[
-              { href: "/", label: "Discover" },
               { href: "/explore", label: "Explore" },
               { href: "/create", label: "Launch" },
             ].map(({ href, label }) => (
@@ -119,15 +102,6 @@ export default function Navbar() {
           <span className="text-[11px] font-mono text-gray-400 hidden lg:inline uppercase tracking-wider">
             Securing Escrow Milestones
           </span>
-
-          {/* Live London Time */}
-          <div className="flex items-center gap-2 text-xs font-sans text-gray-400">
-            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
-            <span>{londonTime ? `${londonTime} in London` : "--:-- in London"}</span>
-          </div>
 
           {/* Connect Wallet with Hover Text Roll */}
           <ConnectButton.Custom>
@@ -191,9 +165,6 @@ export default function Navbar() {
           >
             <div className="flex justify-between items-center border-b border-white/5 pb-4">
               <span className="text-xs font-mono text-gray-400">DEPOSIT CROWD ESCROW</span>
-              <span className="text-xs font-mono text-gray-400">
-                {londonTime ? `${londonTime} London` : ""}
-              </span>
             </div>
 
             <nav className="flex flex-col gap-4">
