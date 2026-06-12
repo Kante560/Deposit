@@ -319,7 +319,8 @@ export default function Page() {
         )}
       </AnimatePresence>
 
-      <div className="flex-1 flex flex-col bg-[#000000] text-slate-200">
+      {/* Root page wrapper — overflow-x-hidden prevents any child from causing horizontal scroll */}
+      <div className="flex-1 flex flex-col bg-[#000000] text-slate-200 overflow-x-hidden w-full">
         {/* 1. Hero Section */}
         <HeroSection />
 
@@ -368,8 +369,8 @@ export default function Page() {
       </section>
 
       {/* 3. Product Capabilities (Header & Grid) */}
-      <section id="capabilities" className="py-28 border-b border-white/5 bg-[#000000]">
-        <div className="max-w-7xl mx-auto px-6">
+      <section id="capabilities" className="py-28 border-b border-white/5 bg-[#000000] overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <m.div 
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -484,9 +485,9 @@ export default function Page() {
       </section>
 
       {/* 4. Enterprise Controls & Access Snapshot */}
-      <section className="py-28 border-b border-white/5 bg-[#000000] relative">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <section className="py-28 border-b border-white/5 bg-[#000000] relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left Info List */}
             <m.div
               initial={{ opacity: 0, x: -50 }}
@@ -570,8 +571,8 @@ export default function Page() {
       </section>
 
       {/* 5. Automation Playbooks (Tabbed Section) */}
-      <section className="py-28 border-b border-white/5 bg-[#000000]" ref={playbooksRef}>
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-28 border-b border-white/5 bg-[#000000] overflow-hidden" ref={playbooksRef}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <m.div 
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -668,8 +669,8 @@ export default function Page() {
       </section>
 
       {/* 6. Campaign Grid Section (Explore verified campaigns) */}
-      <section id="explore" className="py-28 border-b border-white/5 bg-[#000000]">
-        <div className="max-w-7xl mx-auto px-6">
+      <section id="explore" className="py-28 border-b border-white/5 bg-[#000000] overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
             <m.div
               initial={{ opacity: 0, x: -50 }}
@@ -727,8 +728,8 @@ export default function Page() {
       </section>
 
       {/* 7. Escrow Fees & Scale Tiers Grid (Pricing) */}
-      <section className="py-28 border-b border-white/5 bg-[#000000]">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-28 border-b border-white/5 bg-[#000000] overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <m.div 
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -887,13 +888,13 @@ export default function Page() {
       </section>
 
       {/* 8. FAQs Section */}
-      <section id="faq" className="py-28 border-b border-white/5 bg-[#000000]">
+      <section id="faq" className="py-28 border-b border-white/5 bg-[#000000] overflow-hidden">
         <m.div 
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="max-w-4xl mx-auto px-6"
+          className="max-w-4xl mx-auto px-4 sm:px-6"
         >
           <div className="text-center mb-16">
             <span className="text-xs font-bold font-mono text-indigo-400 uppercase tracking-widest block mb-3">
@@ -957,7 +958,7 @@ export default function Page() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="max-w-4xl mx-auto px-6 text-center z-10 flex flex-col items-center"
+          className="max-w-4xl w-full mx-auto px-4 sm:px-6 text-center z-10 flex flex-col items-center"
         >
           <h2 className="text-3xl md:text-5xl font-extrabold font-heading text-white tracking-tight mb-4">
             Shortcut your team&apos;s <span className="font-serif italic font-normal tracking-normal gradient-text-purple">workflow</span>.
@@ -1060,45 +1061,49 @@ export default function Page() {
                 </p>
               </div>
 
-              {/* Right Column (Links) */}
-              <div className="md:col-span-7 grid grid-cols-2 md:grid-cols-4 gap-8">
-                {/* Product */}
+
+              {/* Right Column — Quick Links only */}
+              <div className="md:col-span-7 flex justify-start md:justify-end">
                 <div className="space-y-4 font-sans">
-                  <span className="text-white font-bold text-sm block">Product</span>
+                  <span className="text-white font-bold text-sm block tracking-wide uppercase font-mono">Quick Links</span>
                   <ul className="space-y-3 text-sm text-slate-400">
-                    <li><a href="#" className="hover:text-white transition-colors">How it works</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Use cases</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Security</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
-                  </ul>
-                </div>
-                {/* Resources */}
-                <div className="space-y-4 font-sans">
-                  <span className="text-white font-bold text-sm block">Resources</span>
-                  <ul className="space-y-3 text-sm text-slate-400">
-                    <li><a href="#" className="hover:text-white transition-colors">Docs</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Guides</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Support</a></li>
-                  </ul>
-                </div>
-                {/* Company */}
-                <div className="space-y-4 font-sans">
-                  <span className="text-white font-bold text-sm block">Company</span>
-                  <ul className="space-y-3 text-sm text-slate-400">
-                    <li><a href="#" className="hover:text-white transition-colors">About</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-                  </ul>
-                </div>
-                {/* Legal */}
-                <div className="space-y-4 font-sans">
-                  <span className="text-white font-bold text-sm block">Legal</span>
-                  <ul className="space-y-3 text-sm text-slate-400">
-                    <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Terms</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Risk notice</a></li>
+                    <li>
+                      <a
+                        href="#capabilities"
+                        onClick={(e) => { e.preventDefault(); document.getElementById("capabilities")?.scrollIntoView({ behavior: "smooth" }); }}
+                        className="hover:text-white transition-colors"
+                      >
+                        Features
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="#explore"
+                        onClick={(e) => { e.preventDefault(); document.getElementById("explore")?.scrollIntoView({ behavior: "smooth" }); }}
+                        className="hover:text-white transition-colors"
+                      >
+                        Explore Campaigns
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/create" className="hover:text-white transition-colors">
+                        Create Campaign
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="#faq"
+                        onClick={(e) => { e.preventDefault(); document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" }); }}
+                        className="hover:text-white transition-colors"
+                      >
+                        FAQ
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/explore" className="hover:text-white transition-colors">
+                        All Campaigns
+                      </a>
+                    </li>
                   </ul>
                 </div>
               </div>

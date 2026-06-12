@@ -16,7 +16,7 @@ interface MilestoneInput {
   percentage: number;
 }
 
-export default function CreateCampaign() {
+export default function CreateCampaign(){
   const router = useRouter();
   const chainId = useChainId();
   const account = useAccount();

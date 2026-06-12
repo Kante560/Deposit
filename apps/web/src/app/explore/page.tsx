@@ -135,7 +135,7 @@ export default function ExplorePage() {
       <div className="max-w-7xl mx-auto w-full">
         {/* Page Header */}
         <div className="flex flex-col items-center justify-center text-center mb-16">
-          <span className="text-xs font-bold font-mono text-indigo-400 uppercase tracking-widest px-3 py-1 rounded-full bg-indigo-400/10 border border-indigo-400/20 mb-4 inline-block">
+          <span className="text-xs font-bold font-mono text-indigo-400 uppercashe tracking-widest px-3 py-1 rounded-full bg-indigo-400/10 border border-indigo-400/20 mb-4 inline-block">
             Decentralized Funding
           </span>
           <h1 className="text-4xl md:text-6xl font-extrabold font-heading text-glow-purple tracking-tight mb-4">

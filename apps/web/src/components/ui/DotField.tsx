@@ -1,4 +1,4 @@
-import { useEffect, useRef, memo, HTMLAttributes } from 'react';
+import { useEffect, useRef, memo, HTMLAttributes, useId } from 'react';
 
 import './DotField.css';
 
@@ -57,7 +57,8 @@ const DotField = memo(({
   const propsRef = useRef<DotFieldProps>({});
   propsRef.current = { dotRadius, dotSpacing, cursorRadius, cursorForce, bulgeOnly, bulgeStrength, sparkle, waveAmplitude, gradientFrom, gradientTo };
   const rebuildRef = useRef<(() => void) | null>(null);
-  const glowIdRef = useRef(`dot-field-glow-${Math.random().toString(36).slice(2, 9)}`);
+  const rawId = useId();
+  const glowId = `dot-field-glow-${rawId.replace(/:/g, "")}`;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -281,7 +282,7 @@ const DotField = memo(({
         }}
       >
         <defs>
-          <radialGradient id={glowIdRef.current}>
+          <radialGradient id={glowId}>
             <stop offset="0%" stopColor={glowColor} />
             <stop offset="100%" stopColor="transparent" />
           </radialGradient>
@@ -291,7 +292,7 @@ const DotField = memo(({
           cx="-9999"
           cy="-9999"
           r={glowRadius}
-          fill={`url(#${glowIdRef.current})`}
+          fill={`url(#${glowId})`}
           style={{ opacity: 0, willChange: 'opacity' }}
         />
       </svg>

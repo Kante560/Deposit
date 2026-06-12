@@ -6,6 +6,7 @@ import { formatEther, parseEther } from "viem";
 import { DepositEscrowABI, getContractAddress } from "@deposit/contracts";
 import GlassCard from "@/components/GlassCard";
 import OracleModal from "@/components/OracleModal";
+import ConnectWalletModal from "@/components/ConnectWalletModal";
 
 // ─── Mock Database records fallback ─────────────────────────────────────────
 const MOCK_CAMPAIGNS = [
@@ -80,9 +81,11 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
 
   // Modal control
   const [isOracleModalOpen, setIsOracleModalOpen] = useState(false);
+  const [showConnectModal, setShowConnectModal] = useState(false);
   const [fundingAmount, setFundingAmount] = useState("0.1");
   const [isFunding, setIsFunding] = useState(false);
   const [isRefunding, setIsRefunding] = useState(false);
+  const [txStatus, setTxStatus] = useState<"idle" | "success" | "error">("idle");
 
   // Blockchain interaction hooks
   const { writeContractAsync } = useWriteContract();
@@ -193,8 +196,9 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
   // Escrow contribution action
   const handleFund = async (e: React.FormEvent) => {
     e.preventDefault();
+    // If not connected, open the connect modal instead of alerting
     if (!account.isConnected) {
-      alert("Please connect your wallet first.");
+      setShowConnectModal(true);
       return;
     }
     if (isMockCampaign) {
@@ -203,6 +207,7 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
     }
 
     setIsFunding(true);
+    setTxStatus("idle");
     try {
       const value = parseEther(fundingAmount);
       const tx = await writeContractAsync({
@@ -214,12 +219,12 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
       });
 
       console.log("Funding transaction sent:", tx);
-      alert(`Funding successful! Transaction sent: ${tx}`);
+      setTxStatus("success");
       setFundingAmount("0.1");
       refetch();
     } catch (err) {
       console.error("Funding error:", err);
-      alert("Funding failed. See console for details.");
+      setTxStatus("error");
     } finally {
       setIsFunding(false);
     }
@@ -439,18 +444,25 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
                   />
                 </div>
 
-                {!account.isConnected ? (
-                  <div className="text-[11px] text-center text-slate-400 p-2 bg-indigo-500/10 border border-indigo-500/20 rounded">
-                    🔌 Connect wallet in Navbar to fund.
-                  </div>
-                ) : (
-                  <button
-                    type="submit"
-                    disabled={isFunding}
-                    className="btn-primary w-full glow-purple"
-                  >
-                    {isFunding ? "Broadcasting..." : "Escrow Contribution"}
-                  </button>
+                {/* Always show the fund button — if not connected it opens the modal */}
+                <button
+                  type="submit"
+                  disabled={isFunding}
+                  className="btn-primary w-full glow-purple disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {isFunding
+                    ? "Broadcasting..."
+                    : account.isConnected
+                    ? "Escrow Contribution"
+                    : "Connect & Fund"}
+                </button>
+
+                {/* Inline tx feedback */}
+                {txStatus === "success" && (
+                  <p className="text-xs text-center text-emerald-400 font-mono">✓ Transaction sent successfully!</p>
+                )}
+                {txStatus === "error" && (
+                  <p className="text-xs text-center text-red-400 font-mono">✗ Transaction failed. Check console.</p>
                 )}
               </form>
             )}
@@ -498,16 +510,24 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
         </div>
       </div>
 
-      {/* ─── Oracle Modal Integration ─────────────────────────────────────── */}
+      {/* ─── Oracle Modal ──────────────────────────────────────────────────── */}
       <OracleModal
         isOpen={isOracleModalOpen}
         onClose={() => setIsOracleModalOpen(false)}
         campaignId={campaignId}
         originalPromise={currentPromise}
         onSuccess={() => {
-          // Refresh data
           setTimeout(() => refetch(), 1000);
         }}
+      />
+
+      {/* ─── Connect Wallet Modal ─────────────────────────────────────────── */}
+      {/* Opens when unauthenticated user tries to fund. Uses RainbowKit — no deeplinks. */}
+      <ConnectWalletModal
+        isOpen={showConnectModal}
+        onClose={() => setShowConnectModal(false)}
+        headline="Connect to Fund"
+        description="Connect your wallet to contribute ETH to this escrow campaign. Funds are secured until milestones are verified."
       />
     </div>
   );

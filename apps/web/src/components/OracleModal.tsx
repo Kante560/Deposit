@@ -54,8 +54,6 @@ export default function OracleModal({
     }
   }, [isOpen]);
 
-  if (!isOpen) return null;
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!evidenceLink.trim()) return;
