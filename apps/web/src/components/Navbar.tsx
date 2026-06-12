@@ -277,47 +277,23 @@ export default function Navbar() {
                       </button>
                     );
                   }
-
-                  // Not connected: show wallet-specific buttons that use connect(connector)
+                  // Not connected: show the generic connect button
                   return (
                     <div className="flex flex-col gap-3 w-full">
-                      {/* MetaMask — triggers MetaMask connector via wagmi */}
                       <button
-                        id="mobile-connect-metamask"
-                        onClick={() => connectWallet(METAMASK_CONNECTOR_ID, openConnectModal)}
-                        className="w-full py-4 bg-[#f6851b] hover:bg-[#e2761b] text-white text-sm font-semibold rounded-xl flex items-center justify-center gap-2.5 transition-colors cursor-pointer"
-                      >
-                        <svg width="20" height="20" viewBox="0 0 35 33" fill="none">
-                          <path d="M32.9 1L19.4 10.7l2.5-5.9L32.9 1z" fill="#E17726" stroke="#E17726" strokeWidth="0.25" strokeLinecap="round" strokeLinejoin="round"/>
-                          <path d="M2.1 1l13.4 9.8-2.4-5.9L2.1 1z" fill="#E27625" stroke="#E27625" strokeWidth="0.25" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                        MetaMask
-                      </button>
-
-                      {/* Phantom — triggers Phantom connector via wagmi */}
-                      <button
-                        id="mobile-connect-phantom"
-                        onClick={() => connectWallet(PHANTOM_CONNECTOR_ID, openConnectModal)}
-                        className="w-full py-4 bg-[#ab9ff2] hover:bg-[#8a7be0] text-white text-sm font-semibold rounded-xl flex items-center justify-center gap-2.5 transition-colors cursor-pointer"
-                      >
-                        <svg width="20" height="20" viewBox="0 0 128 128" fill="none">
-                          <rect width="128" height="128" rx="26" fill="url(#phantom_grad)"/>
-                          <defs><linearGradient id="phantom_grad" x1="0" y1="0" x2="128" y2="128"><stop stopColor="#534BB1"/><stop offset="1" stopColor="#551BF9"/></linearGradient></defs>
-                          <path d="M110 65.5C110 89 91 109 67.5 109c-11.7 0-21.7-4.8-28.2-12.7a14.2 14.2 0 0 1-11.6 6.2C19.6 102.5 14 96.9 14 90s5.6-12.5 12.5-12.5c1.5 0 3 .3 4.3.7C31 72 34.7 66 40.8 62.1c.5-5.6 2.4-10.8 5.3-15.3C33.4 47.5 24 37.5 24 25.5a3 3 0 0 1 3-3c1.7 0 3 1.3 3 3 0 9.7 8 17.5 17.5 17.5s17.5-7.8 17.5-17.5a3 3 0 0 1 6 0c0 12-9.4 22-21.3 22.9C46 55 43.5 63 45.1 70.9c7-4 15.3-6.4 24.4-6.4C84.8 64.5 97 72.4 110 65.5z" fill="white"/>
-                        </svg>
-                        Phantom
-                      </button>
-
-                      {/* More wallets — opens RainbowKit's full WalletConnect modal */}
-                      <button
-                        id="mobile-connect-more"
+                        id="mobile-connect-wallet"
                         onClick={() => {
                           setIsMobileMenuOpen(false);
                           openConnectModal?.();
                         }}
-                        className="w-full py-3 mt-1 bg-white/5 border border-white/10 text-white text-xs font-medium rounded-xl cursor-pointer hover:bg-white/10 transition-colors"
+                        className="w-full py-4 bg-[#6366f1] hover:bg-[#4a5cff] text-white text-sm font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer"
                       >
-                        More Wallets (WalletConnect)
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="2" y="4" width="20" height="16" rx="2" ry="2" />
+                          <line x1="2" y1="10" x2="22" y2="10" />
+                          <circle cx="16" cy="15" r="2" />
+                        </svg>
+                        Connect Wallet
                       </button>
                     </div>
                   );

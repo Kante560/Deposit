@@ -34,13 +34,11 @@ export default function CreateCampaign(){
   ]);
 
   // AI pitch output & animation states
-  const [generatedPitch, setGeneratedPitch] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDeploying, setIsDeploying] = useState(false);
   const [txHash, setTxHash] = useState("");
 
   const pageRef = useRef<HTMLDivElement>(null);
-  const previewRef = useRef<HTMLDivElement>(null);
 
   // contract writing
   const { writeContractAsync } = useWriteContract();
@@ -83,41 +81,23 @@ export default function CreateCampaign(){
   const handleGeneratePitch = () => {
     if (!title.trim() || !ideaDump.trim()) return;
     setIsGenerating(true);
-    setGeneratedPitch("");
+    
+    // Capture the original idea for the prompt template
+    const originalIdea = ideaDump;
+    setIdeaDump("");
 
-    const fullPitch = `# ${title}
-
-## Executive Summary
-Based on the provided concepts, this campaign aims to construct a highly resilient infrastructure for *${ideaDump}*. Built entirely on the Base blockchain network, all milestone funds are locked in Escrow.
-
-## Technical Milestones
-
-${milestones
-  .map(
-    (m, idx) => `### Milestone ${idx + 1}: ${m.promise} (${m.percentage}% Tranche)
-The AI Oracle will verify milestone delivery by scanning public GitHub repositories, verifying tests logs, or analyzing production website endpoints.`
-  )
-  .join("\n\n")}
-
-## Funding Analysis
-- **Target Funding:** ${goal} ETH
-- **Lock Escrow Address:** ${contractAddress}
-- **Milestone Distribution:** Release-on-Verification protocol.`;
+    const fullPitch = `# ${title}\n\n## Executive Summary\nBased on the provided concepts, this campaign aims to construct a highly resilient infrastructure for *${originalIdea}*. Built entirely on the Base blockchain network, all milestone funds are locked in Escrow.\n\n## Technical Milestones\n\n${milestones
+      .map(
+        (m, idx) => `### Milestone ${idx + 1}: ${m.promise} (${m.percentage}% Tranche)\nThe AI Oracle will verify milestone delivery by scanning public GitHub repositories, verifying tests logs, or analyzing production website endpoints.`
+      )
+      .join("\n\n")}\n\n## Funding Analysis\n- **Target Funding:** ${goal} ETH\n- **Lock Escrow Address:** ${contractAddress}\n- **Milestone Distribution:** Release-on-Verification protocol.`;
 
     let i = 0;
-    const speed = 12; // ms per char
-    
-    // Smooth scroll in the preview panel
-    if (previewRef.current) {
-      gsap.to(previewRef.current, {
-        scrollTop: previewRef.current.scrollHeight,
-        duration: 0.3,
-      });
-    }
+    const speed = 10; // ms per char
 
     const typeWriter = () => {
       if (i < fullPitch.length) {
-        setGeneratedPitch((prev) => prev + fullPitch.charAt(i));
+        setIdeaDump((prev) => prev + fullPitch.charAt(i));
         i++;
         setTimeout(typeWriter, speed);
       } else {
@@ -187,10 +167,8 @@ The AI Oracle will verify milestone delivery by scanning public GitHub repositor
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-        {/* Left Column: Form config */}
-        <div className="anim-fade-up">
-          <GlassCard className="border-white/10">
+      <div className="max-w-2xl mx-auto anim-fade-up">
+        <GlassCard className="border-white/10">
             <form onSubmit={handleDeploy} className="flex flex-col gap-6">
               
               {/* Campaign Title */}
@@ -232,7 +210,7 @@ The AI Oracle will verify milestone delivery by scanning public GitHub repositor
                 </div>
                 <textarea
                   required
-                  rows={4}
+                  rows={12}
                   placeholder="Summarize your technical implementation, target repo links, or features. The AI Oracle will analyze this to generate your campaign proposal."
                   value={ideaDump}
                   onChange={(e) => setIdeaDump(e.target.value)}
@@ -375,53 +353,6 @@ The AI Oracle will verify milestone delivery by scanning public GitHub repositor
 
             </form>
           </GlassCard>
-        </div>
-
-        {/* Right Column: AI Preview Output */}
-        <div className="anim-fade-up h-full lg:sticky lg:top-24">
-          <div
-            ref={previewRef}
-            className="w-full glass rounded-xl border border-white/10 p-6 md:p-8 h-[50vh] lg:h-[65vh] overflow-y-auto font-sans flex flex-col"
-            style={{ boxShadow: "inset 0 0 40px rgba(0,0,0,0.6)" }}
-          >
-            {generatedPitch ? (
-              <div className="prose prose-invert max-w-none text-slate-300 select-text">
-                {generatedPitch.split("\n").map((line, idx) => {
-                  if (line.startsWith("# ")) {
-                    return <h1 key={idx} className="text-3xl font-extrabold text-glow-purple tracking-tight border-b border-white/5 pb-4 mb-6">{line.replace("# ", "")}</h1>;
-                  }
-                  if (line.startsWith("## ")) {
-                    return <h2 key={idx} className="text-xl font-bold text-white mt-8 mb-4 border-l-2 border-indigo-400 pl-3">{line.replace("## ", "")}</h2>;
-                  }
-                  if (line.startsWith("### ")) {
-                    return <h3 key={idx} className="text-base font-bold text-indigo-400 mt-6 mb-2">{line.replace("### ", "")}</h3>;
-                  }
-                  if (line.startsWith("- ")) {
-                    return <li key={idx} className="ml-4 list-disc text-sm mb-1">{line.replace("- ", "")}</li>;
-                  }
-                  return <p key={idx} className="text-sm leading-relaxed mb-4">{line}</p>;
-                })}
-              </div>
-            ) : (
-              <div className="flex-1 flex flex-col items-center justify-center text-center py-12">
-                <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-4 text-slate-500">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
-                  </svg>
-                </div>
-                <h4 className="text-sm font-bold text-slate-400 mb-1">No Pitch Generated</h4>
-                <p className="text-xs text-slate-600 max-w-xs leading-relaxed">
-                  Enter your Campaign Title, write down your concepts, and hit &quot;Generate AI Pitch&quot; to see your technical audit profile draft.
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-
       </div>
     </div>
   );

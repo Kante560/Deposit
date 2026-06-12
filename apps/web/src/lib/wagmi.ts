@@ -8,6 +8,15 @@ import {
   coinbaseWallet 
 } from "@rainbow-me/rainbowkit/wallets";
 
+// Force Phantom to always show even if not injected
+const customPhantomWallet = () => {
+  const p = phantomWallet();
+  return {
+    ...p,
+    hidden: () => false,
+  };
+};
+
 export const config = getDefaultConfig({
   appName: "Deposit",
   appDescription: "AI-Verified Crowd Escrow",
@@ -23,7 +32,7 @@ export const config = getDefaultConfig({
   wallets: [
     {
       groupName: 'Recommended',
-      wallets: [phantomWallet, metaMaskWallet],
+      wallets: [customPhantomWallet, metaMaskWallet],
     },
     {
       groupName: 'Others',
