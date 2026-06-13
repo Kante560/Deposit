@@ -40,10 +40,46 @@ export default function Navbar() {
 
   const navbarRef = useRef<HTMLDivElement>(null);
 
-  const { isConnected } = useAccount();
+  const { address: wagmiAddress, isConnected: wagmiIsConnected } = useAccount();
+  const [mockAddress, setMockAddress] = useState<string | null>(null);
   const { connectors, connect } = useConnect();
   const router = useRouter();
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const mock = params.get("mockAddress");
+      if (mock) {
+        setMockAddress(mock);
+      } else {
+        setMockAddress(null);
+      }
+    }
+  }, [pathname]); // Re-check on route changes
+
+  const address = mockAddress || wagmiAddress;
+  const isConnected = !!mockAddress || wagmiIsConnected;
+
+  const ADMIN_ADDRESS = "0x68d0f9286195723e56429ed09F50966f4344b5B7";
+  const isAdmin = isConnected && address?.toLowerCase() === ADMIN_ADDRESS.toLowerCase();
+
+  // ── Record Connected Wallets ────────────────────────────────────────────────
+  // Automatically registers/updates the connected wallet on the backend
+  useEffect(() => {
+    if (isConnected && address) {
+
+      fetch("/api/wallets", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ address }),
+      }).catch((err) => {
+        console.error("Failed to record connected wallet:", err);
+      });
+    }
+  }, [address, isConnected]);
 
   // ── Entrance Animation ─────────────────────────────────────────────────────
   useGSAP(() => {

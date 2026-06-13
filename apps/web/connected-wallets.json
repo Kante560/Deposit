@@ -1,0 +1,14 @@
+[
+  {
+    "address": "0x68d0f9286195723e56429ed09f50966f4344b5b7",
+    "firstConnected": "2026-06-13T06:54:21.031Z",
+    "lastConnected": "2026-06-13T07:00:15.280Z",
+    "connectionCount": 7
+  },
+  {
+    "address": "0x1111111111111111111111111111111111111111",
+    "firstConnected": "2026-06-13T06:57:14.822Z",
+    "lastConnected": "2026-06-13T06:57:14.822Z",
+    "connectionCount": 1
+  }
+]
