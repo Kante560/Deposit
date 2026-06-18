@@ -60,8 +60,8 @@ export default function Page() {
         )}
       </AnimatePresence>
 
-      {/* Root page wrapper — overflow-x-hidden prevents any child from causing horizontal scroll */}
-      <div className="flex-1 flex flex-col bg-[#000000] text-slate-200 overflow-x-hidden w-full">
+      {/* Root page wrapper */}
+      <div className="flex-1 flex flex-col bg-[#000000] text-slate-200 w-full">
         {/* 1. Hero Section */}
         <HeroSection />
 
